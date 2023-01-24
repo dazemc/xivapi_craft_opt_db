@@ -12,3 +12,7 @@ Helpful links:
 https://xivapi.com/search/playground 
 
 https://reqbin.com/post-online 
+
+https://xivapi.com/docs
+
+https://www.elastic.co/guide/en/elasticsearch/reference/6.8/query-dsl.html
