@@ -8,5 +8,7 @@ But is mainly a personal gauge of my progress learning python.
 
 
 Helpful links:
+
 https://xivapi.com/search/playground 
+
 https://reqbin.com/post-online 
