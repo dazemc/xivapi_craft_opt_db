@@ -1,6 +1,6 @@
 import json
 import requests
-from requests.structures import CaseInsensitiveDict
+from collections import defaultdict
 
 #This is still a work in progress and will be updated as I gain time/knowledge
 #Bare with me, I'm new
@@ -9,15 +9,14 @@ from requests.structures import CaseInsensitiveDict
 url = "https://xivapi.com/search"
 
 #Headers, duh
-headers = CaseInsensitiveDict()
+headers = defaultdict()
 headers["Accept"] = "application/json"
 headers["Content-Type"] = "application/json"
 
 #json payloads meals/meds
-meals = """
-{
- "indexes": "item,achievement,instantcontent",
- "columns": "Name",
+meals = {
+ "indexes": "item",
+ "columns": "Name,Bonuses",
   "body": {
     "query": {
         "bool" : {
@@ -37,11 +36,10 @@ meals = """
     "size": 100
 }
 }
-"""
-meds = """
-{
- "indexes": "item,achievement,instantcontent",
- "columns": "Name",
+
+meds = {
+ "indexes": "item",
+ "columns": "Name,Bonuses",
   "body": {
     "query": {
         "bool" : {
@@ -61,11 +59,11 @@ meds = """
     "size": 100
 }
 }
-"""
+
 
 #Save the responses
-meals_request = requests.post(url, headers=headers, data=meals)
-meds_request = requests.post(url, headers=headers, data=meds)
+meals_request = requests.post(url, headers=headers, json=meals)
+meds_request = requests.post(url, headers=headers, json=meds)
 
 #print out responses into respective files, and make them if they are not there
 with open("Meal.json", mode="w+", encoding="utf-8") as my_file:
