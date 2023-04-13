@@ -1,18 +1,18 @@
 import requests
 import json
-from Buffs import Buffs
+from Buffs import *
 
 # Endpoint
 url = "https://xivapi.com/search"
-buff_type = ["Medicine", "Meals"]
-buff_name = "Meals"
+buff_type = ["Medicine", "Meal"]
+buff_name = "Meal"
 
 for buff in buff_type:
     buffs = []
 
     params = {
         "indexes": "item",
-        "columns": "Name,Bonuses",
+        "columns": "Name,Bonuses,Name_en,Name_de,Name_fr,Name_ja",
         "body": {
             "query": {
                 "bool": {
@@ -34,6 +34,7 @@ for buff in buff_type:
     }
     request = requests.post(url, json=params)
     request.raise_for_status()
+    # print(request.text)
 
     for i in request.json()["Results"]:
         s_cp_percent = i.get("Bonuses", {}).get("CP", {}).get("Value")
@@ -43,9 +44,12 @@ for buff in buff_type:
         s_control_percent = i.get("Bonuses", {}).get("Control", {}).get("Value")
         s_control_value = i.get("Bonuses", {}).get("Control", {}).get("Max")
         s_name = i.get("Name")
+        s_name_de = i.get("Name_de")
+        s_name_fr = i.get("Name_fr")
+        s_name_ja = i.get("Name_ja")
 
         new_item = vars(
-            Buffs(s_cp_percent, s_cp_value, s_craft_percent, s_craft_value, s_control_percent, s_control_value, s_name))
+            Buffs(s_cp_percent, s_cp_value, s_craft_percent, s_craft_value, s_control_percent, s_control_value, s_name, s_name_de, s_name_fr, s_name_ja))
 
         # Remove None values from previous step
         for v in list(new_item):
@@ -57,4 +61,5 @@ for buff in buff_type:
         my_file.seek(0)
         my_file.write(json.dumps(buffs, indent=2, sort_keys=True, ensure_ascii=False))
 
+    # This is for the second iteration
     buff_name = "Medicine"
